@@ -15,20 +15,43 @@ const createReservation = async(date, partyCount, customer_id, restaurant_id) =>
 }
 
 
-const destoryReservation = async(reservationId) => {
+const destoryReservation = async(reservationId, customer_id) => {
   try{
-    const result = await client.query(`
-      DELETE FROM reservation WHERE id = $1 
-      RETURNING *`, 
-      [reservationId]);
+    const {rows} = await client.query(`
+      DELETE FROM reservation WHERE id = ${reservationId} and customer_id = ${customer_id}
+      RETURNING *`
+      );
 
-      if (result.rowCount === 0) {
-        console.log("No reservation found with the given ID.");
-        return null;
+      if (rows[0]) {
+        return rows[0];
+      } else {
+        throw Error({message:`reservation not found`});
       }
-  
-      return result.rows[0]; 
     
+  } catch(err) {
+    console.log(err);
+  }
+}
+
+
+const fetchAllReservations = async() => {
+  try{
+    const {rows: fetchedReservations} = await client.query(`
+      SELECT * FROM reservations; 
+    `);
+
+    return fetchedReservations;
+  } catch(err) {
+    console.log(err);
+  }
+
+}
+
+
+const getReservationByCustomerAndReservationId = async(customer_id, reservationId) => {
+  try{
+    const {row} = await client.query(`
+      `);
   } catch(err) {
     console.log(err);
   }
@@ -36,5 +59,6 @@ const destoryReservation = async(reservationId) => {
 
 module.exports = {
   createReservation,
-  destoryReservation
+  destoryReservation,
+  fetchAllReservations
 }

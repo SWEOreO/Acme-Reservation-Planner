@@ -93,7 +93,8 @@ const syncAndSeed = async() => {
 
   // fetch all customers
   console.log(`FETCH ALL CUSTOMERS`)
-  await fetchAllCustomers();
+  const allCustomers = await fetchAllCustomers();
+  console.log(allCustomers);
 
   console.log(`CREATING RESTAURANTS`);
   await createRestaurant('BBQ');
@@ -109,13 +110,15 @@ const syncAndSeed = async() => {
 
    // fetch all restaurants
    console.log(`FETCH ALL RESTAURANTS`)
-   await fetchAllRestaurants();
+   const allRestaurants = await fetchAllRestaurants();
+   console.log(allRestaurants);
 
   console.log(`CREATING RESERVATION`);
   console.log(`RESERVATION CREATED`);
 
   // create reservation
   console.log(`CREATE RESERVATION`);
+  console.log(new Date(2025,1,22).toISOString().slice(0,19).replace('T',' '));
   await createReservation('2025-01-01',4,2,1);
   await createReservation('2025-02-01',5,3,9);
   await createReservation('2025-03-01',2,6,7);
